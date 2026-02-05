@@ -11,15 +11,18 @@ pipeline {
       steps { checkout scm }
     }
 
-    stage('Python Lint (basic)') {
-      steps {
-        sh '''
-          python3 --version || true
-          pip3 install --user -r requirements.txt
-          python3 -m py_compile app.py
-        '''
-      }
-    }
+   stage('Python Lint (basic)') {
+  steps {
+    sh '''
+      python3 --version
+      python3 -m venv .venv
+      . .venv/bin/activate
+      python -m pip install --upgrade pip
+      pip install -r requirements.txt
+      python -m py_compile app.py
+    '''
+  }
+}
 
     stage('Docker Build') {
       steps {
