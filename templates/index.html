@@ -5,67 +5,138 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Valentine?</title>
   <style>
-    body {
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      background: radial-gradient(circle at top, #fff, #ffe3ec);
+    }
+
+    .card{
+      width:min(720px, 92vw);
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(255, 182, 193, .65);
+      border-radius: 26px;
+      padding: 34px 28px 26px;
+      box-shadow: 0 18px 40px rgba(0,0,0,.10);
+      text-align:center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glow{
+      position:absolute;
+      inset:-120px -120px auto auto;
+      width:260px; height:260px;
+      background: radial-gradient(circle, rgba(225,29,72,.18), rgba(225,29,72,0));
+      filter: blur(2px);
+      transform: rotate(18deg);
+      pointer-events:none;
+    }
+
+    .emoji{
+      font-size: 56px;
+      margin-bottom: 10px;
+      line-height: 1;
+    }
+
+    h1{
       margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: radial-gradient(circle at top, #ffe3ec, #fff);
-      font-family: Arial, sans-serif;
+      font-size: clamp(26px, 3.5vw, 40px);
+      letter-spacing: -0.02em;
+      color:#111827;
     }
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+    .sub{
+      margin: 10px 0 22px;
+      color:#4b5563;
+      font-size: 16px;
     }
-    h1 {
-      margin-bottom: 20px;
+
+    .playground{
+      position: relative;
+      margin: 0 auto;
+      width: min(520px, 90%);
+      height: 140px;
     }
-    .btn {
-      padding: 12px 20px;
-      margin: 10px;
+
+    .btn{
+      border: 0;
+      padding: 13px 22px;
+      border-radius: 14px;
       font-size: 18px;
-      border: none;
-      border-radius: 10px;
       cursor: pointer;
+      box-shadow: 0 12px 24px rgba(0,0,0,.10);
+      transition: transform .12s ease, box-shadow .12s ease;
       position: absolute;
+      user-select: none;
     }
-    .yes {
+    .btn:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(0,0,0,.12);
+    }
+
+    .yes{
       background: #e11d48;
       color: white;
-      left: 40%;
-      top: 55%;
+      left: 34%;
+      top: 56px;
     }
-    .no {
+
+    .no{
       background: #111827;
       color: white;
-      left: 55%;
-      top: 55%;
+      left: 56%;
+      top: 56px;
+    }
+
+    .hint{
+      margin-top: 10px;
+      font-size: 13px;
+      color: #6b7280;
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>Will you be my Valentine? 💘</h1>
-    <button class="btn yes" id="yesBtn">Yes</button>
-    <button class="btn no" id="noBtn">No</button>
+    <div class="glow"></div>
+    <div class="emoji">💘</div>
+    <h1>Will you be my Valentine?</h1>
+    <div class="sub">Choose wisely 😄</div>
+
+    <div class="playground" id="playground">
+      <button class="btn yes" id="yesBtn">Yes 💖</button>
+      <button class="btn no" id="noBtn">No 🙈</button>
+    </div>
+
+    <div class="hint">Tip: Try clicking “No” 😏</div>
   </div>
 
   <script>
     const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const playground = document.getElementById("playground");
 
     function moveNoButton() {
-      const x = Math.random() * window.innerWidth * 0.7;
-      const y = Math.random() * window.innerHeight * 0.7;
+      const pad = 8;
+      const maxX = playground.clientWidth - noBtn.offsetWidth - pad;
+      const maxY = playground.clientHeight - noBtn.offsetHeight - pad;
+
+      const x = Math.floor(Math.random() * (maxX - pad + 1)) + pad;
+      const y = Math.floor(Math.random() * (maxY - pad + 1)) + pad;
+
       noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
+      noBtn.style.top  = y + "px";
     }
 
+    // No button runs away inside the card area
     noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("mousedown", (e) => { e.preventDefault(); moveNoButton(); });
 
-    document.getElementById("yesBtn").addEventListener("click", () => {
+    // Yes opens happy page
+    yesBtn.addEventListener("click", () => {
       window.location.href = "/happy";
     });
   </script>
