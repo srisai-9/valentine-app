@@ -11,18 +11,18 @@ pipeline {
       steps { checkout scm }
     }
 
-   stage('Python Lint (basic)') {
-  steps {
-    sh '''
-      python3 --version
-      python3 -m venv .venv
-      . .venv/bin/activate
-      python -m pip install --upgrade pip
-      pip install -r requirements.txt
-      python -m py_compile app.py
-    '''
-  }
-}
+    stage('Python Lint (basic)') {
+      steps {
+        sh '''
+          python3 --version
+          python3 -m venv .venv
+          . .venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m py_compile app.py
+        '''
+      }
+    }
 
     stage('Docker Build') {
       steps {
@@ -45,11 +45,21 @@ pipeline {
         '''
       }
     }
+
+    stage('Deploy (production)') {
+      steps {
+        sh '''
+          docker rm -f valentine_app || true
+          docker run -d --restart unless-stopped --name valentine_app -p 5000:5000 ${IMAGE_NAME}:${TAG}
+          docker ps --filter "name=valentine_app"
+        '''
+      }
+    }
   }
 
   post {
     always {
-      sh 'docker images | head -n 5 || true'
+      sh 'docker images | head -n 10 || true'
     }
   }
 }
