@@ -5,106 +5,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Valentine?</title>
   <style>
-    :root { font-family: system-ui, Arial, sans-serif; }
     body {
-      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
       background: radial-gradient(circle at top, #ffe3ec, #fff);
+      font-family: Arial, sans-serif;
     }
-    .card{
-      width: min(520px, 92vw);
-      background: rgba(255,255,255,.9);
-      border: 1px solid rgba(255, 182, 193, .7);
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 12px 30px rgba(0,0,0,.08);
-      position: relative;
-      overflow: hidden;
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
-    h1 { margin: 0 0 8px; font-size: 32px; }
-    p { margin: 0 0 18px; color: #444; }
-    .buttons {
-      position: relative;
-      height: 110px;
-      margin-top: 10px;
+    h1 {
+      margin-bottom: 20px;
     }
-    .btn{
-      border: 0;
-      padding: 14px 22px;
-      border-radius: 14px;
+    .btn {
+      padding: 12px 20px;
+      margin: 10px;
       font-size: 18px;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
-      transition: transform .12s ease, box-shadow .12s ease;
-      box-shadow: 0 10px 20px rgba(0,0,0,.08);
       position: absolute;
-      user-select: none;
     }
-    .btn:hover { transform: translateY(-2px); }
-    .yes{
-      left: 30%;
-      top: 24px;
-      background: #ff3b7a;
+    .yes {
+      background: #e11d48;
       color: white;
+      left: 40%;
+      top: 55%;
     }
-    .no{
-      left: 55%;
-      top: 24px;
+    .no {
       background: #111827;
       color: white;
+      left: 55%;
+      top: 55%;
     }
-    .hearts{
-      position: absolute;
-      inset: -40px -40px auto auto;
-      font-size: 44px;
-      opacity: .12;
-      transform: rotate(10deg);
-    }
-    .hint { margin-top: 100px; font-size: 13px; opacity: .65; }
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="hearts">❤️💖❤️</div>
     <h1>Will you be my Valentine? 💘</h1>
-    <p>Choose carefully 😄</p>
-
-    <div class="buttons" id="playground">
-      <button class="btn yes" id="yesBtn">Yes ✅</button>
-      <button class="btn no" id="noBtn">No ❌</button>
-    </div>
-
-    <div class="hint">Tip: Try clicking “No” 😏</div>
+    <button class="btn yes" id="yesBtn">Yes</button>
+    <button class="btn no" id="noBtn">No</button>
   </div>
 
   <script>
     const noBtn = document.getElementById("noBtn");
-    const yesBtn = document.getElementById("yesBtn");
-    const playground = document.getElementById("playground");
 
     function moveNoButton() {
-      const pad = 10;
-      const maxX = playground.clientWidth - noBtn.offsetWidth - pad;
-      const maxY = playground.clientHeight - noBtn.offsetHeight - pad;
-
-      const x = Math.floor(Math.random() * (maxX - pad + 1)) + pad;
-      const y = Math.floor(Math.random() * (maxY - pad + 1)) + pad;
-
+      const x = Math.random() * window.innerWidth * 0.7;
+      const y = Math.random() * window.innerHeight * 0.7;
       noBtn.style.left = x + "px";
-      noBtn.style.top  = y + "px";
+      noBtn.style.top = y + "px";
     }
 
-    // When user tries to click "No", it runs away
     noBtn.addEventListener("mouseenter", moveNoButton);
-    noBtn.addEventListener("mousedown", (e) => { e.preventDefault(); moveNoButton(); });
 
-    // "Yes" -> open new page
-    yesBtn.addEventListener("click", () => {
+    document.getElementById("yesBtn").addEventListener("click", () => {
       window.location.href = "/happy";
-    });
-
-    // Optional: on load, ensure it starts in a good spot
-    window.addEventListener("load", () => {
-      noBtn.style.left = "55%";
-      noBtn.style.top = "24px";
     });
   </script>
 </body>
